@@ -7,7 +7,7 @@ PREDICT_URL = os.getenv("PREDICT_SERVICE_URL", "http://localhost:5000")
 
 @app.get("/")
 def root():
-    return {"message": "Bienvenue sur l'API principale"}
+    return {"message": "Bienvenue sur l'API gateway"}
 
 @app.get("/predict")
 def predict():

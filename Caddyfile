@@ -1,0 +1,4 @@
+
+api.autoktone.net {
+  reverse_proxy back:8000
+}

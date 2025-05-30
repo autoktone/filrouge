@@ -1,18 +1,35 @@
 services:
+
+  gateway:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+    depends_on:
+      - back
+
   back:
     build:
       context: ./back
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    depends_on:
-      - back-predict
+    expose:
+      - "8000"
     environment:
       - PREDICT_SERVICE_URL=http://back-predict:5000
     restart: unless-stopped
+    depends_on:
+      - back-predict
 
   back-predict:
     build:
       context: ./back-predict
       dockerfile: Dockerfile
+    expose:
+      - "5000"
     restart: unless-stopped
+
+volumes:
+  caddy_data:    
