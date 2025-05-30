@@ -1,8 +1,8 @@
 # SOA
-Example of SOA, Service Oriented Architecture with independant micro services through an API gateway.
+Example of SOA, Service Oriented Architecture with independant micro services through an API gateway and a reverse proxy (Caddy).
 
 # Student project
-This a student project but it can be useful for other people who may need to connect a front with a back end using API Rest requests.
+This a student project but it can be useful for other people who may need to connect a front with a back end using API Rest HTTPS requests.
 Docker is helpful here to deploy this basic python/FastApi/Flask/joblib project (useful for ML tasks for example). Those services can be then deployed in Cloud Infrastructure as scalable containers with different public IP Addresses and Ports (example AWS, Azure, Google Cloud...).
 
 # Repository
