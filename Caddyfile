@@ -3,9 +3,25 @@
 api.autoktone.net {
 
 
+
   # Proxy vers le container API Gateway
   reverse_proxy back:8000
 
-
+  # Headers de sécurité
+  header {
+  
+	# Oblige les navigateurs à utiliser uniquement HTTPS
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+	
+    # Empêche le navigateur d’essayer de deviner le type MIME du contenu
+	X-Content-Type-Options "nosniff"
+	
+	# Interdit d’intégrer votre site dans une iframe, protège contre le clickjacking
+    X-Frame-Options "DENY"
+	
+	# Contrôle quelles infos de la requête HTTP "referer" sont envoyées (aucune)
+    Referrer-Policy "no-referrer"
+	
+  }
   
 }
