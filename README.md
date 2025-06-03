@@ -1,5 +1,5 @@
 # SOA
-Example of SOA, Service Oriented Architecture with independant micro services through an API gateway and a reverse proxy (Caddy).
+Example of SOA, Service Oriented Architecture with independant and stateless micro services through an API gateway and a reverse proxy (Caddy).
 
 # Student project
 This is a student project but it can be useful for other people who may need to connect a front with a back end using API Rest HTTPS requests.
