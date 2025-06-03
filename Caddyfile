@@ -3,7 +3,7 @@
 api.autoktone.net {
 
   # Redirection HTTP -> HTTPS (automatique par Caddy mais explicite ici)
-  redir http://api.autoktone.net https://api.autoktone.net 308
+  # redir http://api.autoktone.net https://api.autoktone.net 308
 
   # Proxy vers le container API Gateway
   reverse_proxy back:8000
