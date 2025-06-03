@@ -10,6 +10,7 @@ services:
       - caddy_data:/data
     depends_on:
       - back
+      - back-predict      
 
   back:
     build:
