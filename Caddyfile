@@ -6,7 +6,7 @@ api.autoktone.net {
   redir http://api.autoktone.net https://api.autoktone.net 308
 
   # Proxy vers le container API Gateway
-  reverse_proxy gateway:8000
+  reverse_proxy back:8000
 
   # Headers de sécurité
   header {
