@@ -18,7 +18,7 @@ def predict():
     except Exception as e:
         return {"error": str(e)}
 		
-@app.route("/predict1", methods=["POST"])
+@app.post("/predict1")
 def predict1():
 	try:
 		input_data = request.get_json()
