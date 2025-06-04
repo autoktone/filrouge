@@ -1,24 +1,27 @@
-from flask import Flask, request, jsonify
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 import jwt
-import datetime
 import os
+from datetime import datetime, timedelta
 
-app = Flask(__name__)
-SECRET_KEY = os.getenv("JWT_SECRET", "changeme")
+router = APIRouter()
+JWT_SECRET = os.getenv("JWT_SECRET", "changeme")
 
-@app.route("/auth", methods=["POST"])
-def login():
-    data = request.get_json()
-	
-	# A vérifier dans une base réelle des utilisateurs (version future)
-    if data.get("username") == "admin" and data.get("password") == "password":
-        token = jwt.encode({
-            "sub": "admin",
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
-        }, SECRET_KEY, algorithm="HS256")
-        return jsonify({"access_token": token})
-    else:
-        return jsonify({"error": "Invalid credentials"}), 401
+class AuthRequest(BaseModel):
+    username: str
+    password: str
+
+@router.post("/auth")
+def login(auth: AuthRequest):
+    if auth.username != "admin" or auth.password != "password":
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    payload = {
+        "sub": auth.username,
+        "exp": datetime.utcnow() + timedelta(minutes=60)
+    }
+    token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
+    return {"access_token": token}
 		
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)		

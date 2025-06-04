@@ -8,7 +8,7 @@ Docker is helpful here to deploy this basic python/FastApi/Flask/joblib project 
 # Security
 The communications between internet and the gateway are cyphered (HTTPS/TLS), no need for internal Docker network exchanges.
 A token is necessary for calling services (JWT), as private services should implement it in our case (it is not open DATA API).
-Many actions may harden the security concerns as showed in Caddyfile for secured HTTP requests.
+Many actions may harden the security concerns as showed in Caddyfile for more secured HTTP requests.
 
 # Repository
 This repository can be cloned via Azure CLI or other ways, in order to deploy the project files into an os or a virtual machine (Linux Ubuntu for example).
