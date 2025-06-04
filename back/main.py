@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 import requests
+import httpx
 import os
 
 app = FastAPI()
@@ -18,10 +19,9 @@ def predict():
     except Exception as e:
         return {"error": str(e)}
 		
-@app.get("/predict1")
-def predict1():
-    try:
-        r = requests.get(f"{PREDICT1_URL}/predict")
-        return r.json()
-    except Exception as e:
-        return {"error": str(e)}
+@app.post("/predict1")
+async def predict1(request: Request):
+    data = await request.json()
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{PREDICT1_URL}/predict", json=data)
+    return response.json()
