@@ -2,6 +2,9 @@
 # Gestion sous-domaine API via Caddy
 api.autoktone.net {
 
+  # activer compression
+  encode gzip
+  
   # Redirection HTTP -> HTTPS (automatique par Caddy mais explicite ici)
   # redir http://api.autoktone.net https://api.autoktone.net 308
 

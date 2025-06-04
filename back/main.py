@@ -1,18 +1,46 @@
 from fastapi import FastAPI, Request
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import Depends, HTTPException
 import requests
 import httpx
 import os
 
-app = FastAPI()
-PREDICT_URL = os.getenv("PREDICT_SERVICE_URL", "http://localhost:5000")
-PREDICT1_URL = os.getenv("PREDICT1_SERVICE_URL", "http://back-predict1:5001")
+# Gestion Token JWT
+security = HTTPBearer()
+JWT_SECRET = os.getenv("JWT_SECRET")
 
+def verify_jwt(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+# Gestion API
+app = FastAPI()
+AUTH_URL = os.getenv("AUTH_SERVICE_URL", "http://back-auth:5000")
+PREDICT_URL = os.getenv("PREDICT_SERVICE_URL", "http://back-predict:5001")
+PREDICT1_URL = os.getenv("PREDICT1_SERVICE_URL", "http://back-predict1:5002")
+
+# Check statut sans sécurité
 @app.get("/")
 def root():
-    return {"message": "Bienvenue sur l'API gateway"}
+    return {"message": "Bienvenue sur l'API gateway - Accès limité"}
 
+# Génération Token
+@app.post("/auth")
+async def auth_proxy(request: Request):
+    data = await request.json()
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{AUTH_URL}/auth", json=data)
+    return response.json()
+
+# Services
 @app.get("/predict")
-def predict():
+def predict(user=Depends(verify_jwt)):
     try:
         r = requests.get(f"{PREDICT_URL}/predict")
         return r.json()
@@ -20,7 +48,7 @@ def predict():
         return {"error": str(e)}
 		
 @app.post("/predict1")
-async def predict1(request: Request):
+async def predict1(request: Request, user=Depends(verify_jwt)):
     data = await request.json()
     async with httpx.AsyncClient() as client:
         response = await client.post(f"{PREDICT1_URL}/predict", json=data)
