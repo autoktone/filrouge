@@ -19,8 +19,10 @@ def verify_jwt(credentials: HTTPAuthorizationCredentials = Depends(security)):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-# Gestion API
+# Gestion API : "app" est utilisé dans le Dockerfile "main:app"
 app = FastAPI()
+
+# Variables d'environnement
 AUTH_URL = os.getenv("AUTH_SERVICE_URL", "http://back-auth:5000")
 PREDICT_URL = os.getenv("PREDICT_SERVICE_URL", "http://back-predict:5001")
 PREDICT1_URL = os.getenv("PREDICT1_SERVICE_URL", "http://back-predict1:5002")
