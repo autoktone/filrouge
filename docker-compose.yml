@@ -30,7 +30,7 @@ services:
       
   back-auth:
     build:
-      context: ./auth
+      context: ./back-auth
       dockerfile: Dockerfile
     expose:
       - "5000"
