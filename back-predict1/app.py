@@ -6,11 +6,9 @@ app = Flask(__name__)
 def root():
     return {"message": "Service de prédiction opérationnel"}
 
-@app.route("/predict1", methods=["POST"])
-def predict1():
-    input_data = request.get_json()
-    # Exemple simple : retourner le même message avec une mention
-    return jsonify({"service": "predict1", "input": input_data})
+@app.route("/predict")
+def predict():
+    return jsonify({"prediction": "chien", "confidence": 0.75})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)

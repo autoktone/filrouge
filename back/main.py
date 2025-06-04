@@ -18,10 +18,10 @@ def predict():
     except Exception as e:
         return {"error": str(e)}
 		
-@app.post("/predict1")
+@app.get("/predict1")
 def predict1():
-	try:
-		input_data = request.get_json()
-		return jsonify({"service": "predict1", "input": input_data})		
-	except Exception as e:
+    try:
+        r = requests.get(f"{PREDICT1_URL}/predict")
+        return r.json()
+    except Exception as e:
         return {"error": str(e)}
