@@ -1,5 +1,6 @@
 
 # Gestion sous-domaine API via Caddy
+# Le domaine ou sous domaine doit pointer sur l'adresse Ip publique de la VM (Enregistrement DNS A)
 api.autoktone.net {
 
   # activer compression
