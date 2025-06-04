@@ -21,7 +21,4 @@ def login(auth: AuthRequest):
         "exp": datetime.utcnow() + timedelta(minutes=60)
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
-    return {"access_token": token}
-		
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)		
+    return {"access_token": token}		

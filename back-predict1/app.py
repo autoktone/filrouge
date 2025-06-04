@@ -8,5 +8,6 @@ def predict():
     # Exemple simple : retourner le même message avec une mention
     return jsonify({"service": "predict1", "input": input_data})
 
+# Execution via Flask
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5002)
