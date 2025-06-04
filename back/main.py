@@ -18,3 +18,12 @@ def predict():
     except Exception as e:
         return {"error": str(e)}
 		
+@app.post("/predict1")
+def predict1():
+	try:
+		input_data = request.get_json()
+		r = requests.post(f"{PREDICT1_URL}/predict1", json=input_data)
+		# return jsonify(r.json())
+		return r.json()		
+	except Exception as e:
+        return {"error": str(e)}
