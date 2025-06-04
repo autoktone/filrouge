@@ -10,7 +10,8 @@ services:
       - caddy_data:/data
     depends_on:
       - back
-      - back-predict      
+      - back-predict 
+      - back-predict1      
 
   back:
     build:
@@ -20,9 +21,11 @@ services:
       - "8000"
     environment:
       - PREDICT_SERVICE_URL=http://back-predict:5000
+      - PREDICT1_SERVICE_URL=http://back-predict1:5001
     restart: unless-stopped
     depends_on:
       - back-predict
+      - back-predict1
 
   back-predict:
     build:
@@ -31,6 +34,14 @@ services:
     expose:
       - "5000"
     restart: unless-stopped
+    
+  back-predict1:
+    build:
+      context: ./back-predict1
+      dockerfile: Dockerfile
+    expose:
+      - "5001"
+    restart: unless-stopped    
 
 volumes:
   caddy_data:    
