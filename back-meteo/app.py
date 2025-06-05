@@ -7,8 +7,13 @@ app = Flask(__name__)
 @app.route("/meteo")
 def get_meteo(town: str = "Paris"):
 
-    # Google API Key can be stores in .env file
-    API_KEY = "7e0f2a976c6290e910b8ffcd4236982d"
+    data = request.get_json()
+
+    # town = data.get("town", "Paris")
+    API_KEY = data.get("API_KEY")
+
+    if not API_KEY:
+        return jsonify({"error": "API_KEY is required"}), 400
 
     # Input param : userlocation au moment de l'appel
     url = f"http://api.openweathermap.org/data/2.5/weather?q={town}&appid={API_KEY}&lang=fr&units=metric"
