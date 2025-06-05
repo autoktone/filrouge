@@ -4,7 +4,9 @@ app = Flask(__name__)
 
 @app.route("/meteo")
 def get_meteo():
-    return jsonify({"Paris": "Clear"})
+	
+	# Input param : userlocation au moment de l'appel
+    return jsonify({"weather": "Rainy"})
 
 # Execution via Flask
 if __name__ == "__main__":
