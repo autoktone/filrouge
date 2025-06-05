@@ -1,10 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Query
 import requests
 import httpx
 import os
 import jwt
+
 
 # Gestion Token JWT
 security = HTTPBearer()
