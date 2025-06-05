@@ -1,17 +1,15 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
 
 # Input param : userlocation (town) au moment de l'appel à cet URI
-@app.route("/meteo")
-def get_meteo(town: str = "Paris"):
+@app.route("/meteo", methods=["GET"])
+def get_meteo():
 
-    data = request.get_json()
-
-    town = data.get("town", "Paris")
-    API_KEY = data.get("API_KEY")
-
+    town = request.args.get("town", "Paris")
+    API_KEY = request.args.get("API_KEY")
+	
     if not API_KEY:
         return jsonify({"error": "API_KEY is required"}), 400
 
