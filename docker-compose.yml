@@ -55,7 +55,15 @@ services:
       dockerfile: Dockerfile
     expose:
       - "5002"
-    restart: unless-stopped     
+    restart: unless-stopped  
+
+  back-meteo:
+    build:
+      context: ./back-meteo
+      dockerfile: Dockerfile
+    expose:
+      - "5003"
+    restart: unless-stopped    
 
 volumes:
   caddy_data:    

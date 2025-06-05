@@ -27,6 +27,7 @@ app = FastAPI()
 AUTH_URL = os.getenv("AUTH_SERVICE_URL", "http://back-auth:5000")
 PREDICT_URL = os.getenv("PREDICT_SERVICE_URL", "http://back-predict:5001")
 PREDICT1_URL = os.getenv("PREDICT1_SERVICE_URL", "http://back-predict1:5002")
+METEO_URL = os.getenv("METEO_SERVICE_URL", "http://back-meteo:5003")
 
 # Check statut sans sécurité
 @app.get("/")
@@ -41,7 +42,16 @@ async def auth_proxy(request: Request):
         response = await client.post(f"{AUTH_URL}/auth", json=data)
     return response.json()
 
-# Services
+# Services applicatifs
+@app.get("/meteo")
+def get_meteo():
+    try:
+        r = requests.get(f"{METEO_URL}/meteo")
+        return r.json()
+    except Exception as e:
+        return {"error": str(e)}
+
+# Services Exemples GET:predict et POST:predict1
 @app.get("/predict")
 def predict(user=Depends(verify_jwt)):
     try:
