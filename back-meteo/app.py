@@ -18,7 +18,7 @@ def get_meteo(town: str = "Paris"):
         return {"error": f"Erreur API météo: {response.status_code}"}
 
     # Exemple : 'Rain', 'Clear', 'Clouds'...
-	data = response.json()
+    data = response.json()
     condition = data['weather'][0]['main'].lower()
     return jsonify({"weather": condition})	
 
