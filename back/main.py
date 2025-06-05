@@ -44,12 +44,15 @@ async def auth_proxy(request: Request):
 
 # Services applicatifs
 @app.get("/meteo")
-def get_meteo():
+def get_meteo(town: str = Query("Paris"), api_key: str = Query(...)):
     try:
-        r = requests.get(f"{METEO_URL}/meteo")
-        return r.json()
-    except Exception as e:
-        return {"error": str(e)}
+        # Construction de l’URL avec les paramètres
+        url = f"{METEO_URL}/meteo?town={town}&API_KEY={api_key}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Services Exemples GET:predict et POST:predict1
 @app.get("/predict")

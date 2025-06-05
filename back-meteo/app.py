@@ -9,7 +9,7 @@ def get_meteo(town: str = "Paris"):
 
     data = request.get_json()
 
-    # town = data.get("town", "Paris")
+    town = data.get("town", "Paris")
     API_KEY = data.get("API_KEY")
 
     if not API_KEY:
