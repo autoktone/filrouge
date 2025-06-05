@@ -5,7 +5,11 @@ app = Flask(__name__)
 
 # Input param : userlocation (town) au moment de l'appel à cet URI
 @app.route("/meteo")
-def get_meteo(town="Paris"):
+def get_meteo():
+	
+	# Mode bouchon
+	town = "Paris"
+	
 	# Google API Key can be stores in .env file
 	api_key = "7e0f2a976c6290e910b8ffcd4236982d"
 	
