@@ -59,14 +59,15 @@ def get_meteo(town: str = Query("Paris"), api_key: str = Query(...)):
 # services Events
 @app.get("/events")
 async def get_events(
-    sports: str = Query(..., description="Comma-separated sports list"),
+    availability: str = Query(..., description="e.g. Morning, Afternoon, Evening or Night"),
+	sports: str = Query(..., description="Comma-separated sports list"),
     participation: str = Query(..., description="Comma-separated participation types, e.g. spectator,participant,")
 ):
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
                 f"{EVENTS_URL}/events",
-                params={"sports": sports, "participation": participation}
+                params={"availability": availability, "sports": sports, "participation": participation}
             )
             response.raise_for_status()
             return response.json()

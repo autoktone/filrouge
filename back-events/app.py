@@ -8,33 +8,55 @@ app = Flask(__name__)
 
 def get_db_connection():
     return psycopg2.connect(
-		dbname=os.getenv("DATABASE_NAME"),
-		user=os.getenv("DATABASE_USER"),
-		password=os.getenv("DATABASE_PASSWORD"),
-		host=os.getenv("DATABASE_HOST")
+        dbname=os.getenv("DATABASE_NAME"),
+        user=os.getenv("DATABASE_USER"),
+        password=os.getenv("DATABASE_PASSWORD"),
+        host=os.getenv("DATABASE_HOST")
     )
 
 @app.route("/events", methods=["GET"])
 def get_events():
+
+    availability = request.args.get('availability')  # Morning, Afternoon, Evening, Night
     sports = request.args.get("sports")
     participation = request.args.get("participation")
-
-    if not sports or not participation:
-        return jsonify({"error": "Missing required query parameters"}), 400
-
-    sport_list = [s.strip().capitalize() for s in sports.split(",") if s.strip()]
-    participation_list = [p.strip().capitalize() for p in participation.split(",") if p.strip()]
+    now = datetime.utcnow()
+    params = [now]
 
     query = """
         SELECT id, event_date, location, name, participation_type, popularity_score, sport_type FROM events
-        WHERE sport_type = ANY(%s) AND participation_type = ANY(%s)
-        ORDER BY event_date ASC LIMIT 9
+        WHERE event_date > %s
     """
+
+    #if not sports or not participation:
+        #return jsonify({"error": "Missing required query parameters"}), 400
+
+    if sports:
+        query += " AND sport_type = ANY(%s)"
+        sport_list = [s.strip().capitalize() for s in sports.split(",") if s.strip()]
+        params.append(sport_list)
+
+    if participation:
+        query += " AND participation_type = ANY(%s)"
+        participation_list = [p.strip().capitalize() for p in participation.split(",") if p.strip()]
+        params.append(participation_list)
+
+    if availability:
+        if availability == "Morning":
+            query += " AND CAST(strftime('%H', event_date) AS INTEGER) BETWEEN 6 AND 11"
+        elif availability == "Afternoon":
+            query += " AND CAST(strftime('%H', event_date) AS INTEGER) BETWEEN 12 AND 16"
+        elif availability == "Evening":
+            query += " AND CAST(strftime('%H', event_date) AS INTEGER) BETWEEN 17 AND 21"
+        elif availability == "Night":
+            query += " AND (CAST(strftime('%H', event_date) AS INTEGER) >= 22 OR CAST(strftime('%H', event_date) AS INTEGER) <= 5)"
+
+    query += " ORDER BY event_date ASC, popularity_score DESC LIMIT 9"
 
     try:
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, (sport_list, participation_list))
+        cur.execute(query, params)
         rows = cur.fetchall()
         cur.close()
         conn.close()
