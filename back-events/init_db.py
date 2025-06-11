@@ -4,11 +4,12 @@ import csv
 from datetime import datetime
 
 conn = psycopg2.connect(
-    dbname=os.getenv("POSTGRES_DB"),
-    user=os.getenv("POSTGRES_USER"),
-    password=os.getenv("POSTGRES_PASSWORD"),
-    host=os.getenv("POSTGRES_HOST")
+    dbname=os.getenv("DATABASE_NAME"),
+    user=os.getenv("DATABASE_USER"),
+    password=os.getenv("DATABASE_PASSWORD"),
+    host=os.getenv("DATABASE_HOST")
 )
+
 cur = conn.cursor()
 
 cur.execute("DROP TABLE IF EXISTS events;")
