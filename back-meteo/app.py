@@ -6,8 +6,10 @@ app = Flask(__name__)
 # Input param : userlocation (town) au moment de l'appel à cet URI
 @app.route("/meteo", methods=["GET"])
 def get_meteo():
-
+	
+	# What is the location of the user ?
     town = request.args.get("town", "Paris")
+	# OpenWeatherMap.org service API key 
     API_KEY = request.args.get("API_KEY")
 	
     if not API_KEY:

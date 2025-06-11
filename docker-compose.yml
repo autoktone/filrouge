@@ -22,7 +22,8 @@ services:
       - JWT_SECRET=aef147132c5a2cd145399ea7fd339ae4fd155b0fe67e21b01edd54faaa9e3bcc0f70ebac540349c6450a213c5cc8b9e95783d09f0dcf48d44671743f21a66f1c4a642ebaa7b639e72378dfc759b7059a79154b4c72ecd677a611f4e1e79cc4be31576f6c92f51fd552ff6a91219a3444578aa664b322fa9d75cf738f6cc653826fb9ff022bcdf5d48c17edb7c44c564579e0eb50c10952de6efb8459017311c718e1ed700396f3d6e31beaeba95516b05c2559da510679fb4b7ebd95af44a10f08c6e90e3a2148245455fba6ba0713afd2ad233ced4b5af6e4b064b21ad08996c0554310bd9e00485fab801a810b72fae4194f8cfc9451565e59c3ddc7e493f1
       - PREDICT_SERVICE_URL=http://back-predict:5001      
       - PREDICT1_SERVICE_URL=http://back-predict1:5002 
-      - METEO_SERVICE_URL=http://back-meteo:5003       
+      - METEO_SERVICE_URL=http://back-meteo:5003
+      - EVENTS_SERVICE_URL=http://back-events:5004      
     restart: unless-stopped
     depends_on:
       - back-auth   
@@ -64,5 +65,30 @@ services:
       - "5003"
     restart: unless-stopped    
 
+  back-events:
+    build:
+      context: ./back-events
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_DB=eventsdb
+      - POSTGRES_USER=eventsuser
+      - POSTGRES_PASSWORD=eventspass
+      - POSTGRES_HOST=events-db
+    depends_on:
+      - events-db
+    expose:
+      - "5004"
+    restart: unless-stopped       
+
+  events-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: eventsdb
+      POSTGRES_USER: eventsuser
+      POSTGRES_PASSWORD: eventspass
+    volumes:
+      - events_db_data:/var/lib/postgresql/data
+
 volumes:
-  caddy_data:    
+  caddy_data:
+  events_db_data:

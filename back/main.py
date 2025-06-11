@@ -29,6 +29,7 @@ AUTH_URL = os.getenv("AUTH_SERVICE_URL", "http://back-auth:5000")
 PREDICT_URL = os.getenv("PREDICT_SERVICE_URL", "http://back-predict:5001")
 PREDICT1_URL = os.getenv("PREDICT1_SERVICE_URL", "http://back-predict1:5002")
 METEO_URL = os.getenv("METEO_SERVICE_URL", "http://back-meteo:5003")
+EVENTS_URL = os.getenv("EVENTS_SERVICE_URL", "http://back-events:5004")
 
 # Check statut sans sécurité
 @app.get("/")
@@ -53,6 +54,25 @@ def get_meteo(town: str = Query("Paris"), api_key: str = Query(...)):
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# services Events
+@app.get("/events")
+async def get_events(
+    sports: str = Query(..., description="Comma-separated sports list"),
+    participation: str = Query(..., description="Comma-separated participation types, e.g. spectator,participant,")
+):
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{EVENTS_URL}/events",
+                params={"sports": sports, "participation": participation}
+            )
+            response.raise_for_status()
+            return response.json()
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=e.response.text)
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 # Services Exemples GET:predict et POST:predict1
