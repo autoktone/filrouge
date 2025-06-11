@@ -71,10 +71,12 @@ services:
       context: ./back-events
       dockerfile: Dockerfile
     environment:
-      - POSTGRES_DB=eventsdb
-      - POSTGRES_USER=eventsuser
-      - POSTGRES_PASSWORD=eventspass
-      - POSTGRES_HOST=events-db
+      - DATABASE_HOST=events-db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=eventsdb
+      - DATABASE_USER=eventsuser
+      - DATABASE_PASSWORD=eventspass
+      
     depends_on:
       - events-db
     expose:
@@ -82,14 +84,15 @@ services:
     restart: unless-stopped       
 
   events-db:
-    image: postgres:15
+    image: postgres:14
+    restart: always
     environment:
       POSTGRES_DB: eventsdb
       POSTGRES_USER: eventsuser
       POSTGRES_PASSWORD: eventspass
     volumes:
-      - events_db_data:/var/lib/postgresql/data
+      - events-db-data:/var/lib/postgresql/data
 
 volumes:
   caddy_data:
-  events_db_data:
+  events-db-data:
