@@ -60,7 +60,7 @@ def get_meteo(town: str = Query("Paris"), api_key: str = Query(...)):
 @app.get("/events")
 async def get_events(
     availability: str = Query(..., description="e.g. Morning, Afternoon, Evening or Night"),
-	sports: str = Query(..., description="Comma-separated sports list"),
+    sports: str = Query(..., description="Comma-separated sports list"),
     participation: str = Query(..., description="Comma-separated participation types, e.g. spectator,participant,")
 ):
     try:
