@@ -27,7 +27,7 @@ def get_events():
     query = """
         SELECT * FROM events
         WHERE sport_type = ANY(%s) AND participation_type = ANY(%s)
-        ORDER BY date ASC
+        ORDER BY event_date ASC
     """
 
     try:
