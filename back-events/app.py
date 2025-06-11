@@ -26,7 +26,7 @@ def get_events():
     participation_list = [p.strip().capitalize() for p in participation.split(",") if p.strip()]
 
     query = """
-        SELECT * FROM events
+        SELECT id, event_date, location, name, participation_type, popularity_score, sport_type FROM events
         WHERE sport_type = ANY(%s) AND participation_type = ANY(%s)
         ORDER BY event_date ASC
     """
@@ -50,7 +50,7 @@ def get_events():
             if isinstance(event['event_date'], datetime):
                 event['event_date'] = event['event_date'].strftime('%a, %d %b %Y %H:%M:%S GMT')
             result.append(event)
-        return jsonify({"events": result})		
+        return jsonify({"events": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
