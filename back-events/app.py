@@ -40,12 +40,14 @@ def get_events():
         conn.close()
         
         # Récupération automatique des noms de colonnes
-        columns = [desc[0] for desc in cur.description]
+        #columns = [desc[0] for desc in cur.description]
         
         # Construction Objet JSON contenant un tableau d'objets "event"
         result = []
         for row in rows:
-            event = dict(zip(columns, row))
+            #event = dict(zip(columns, row))
+            event = dict(row) # row se comporte comme un dictionnaire
+
             # Conversion de la date en format HTTP/JSON
             if isinstance(event['event_date'], datetime):
                 event['event_date'] = event['event_date'].strftime('%a, %d %b %Y %H:%M:%S GMT')
