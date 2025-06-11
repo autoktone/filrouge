@@ -76,7 +76,6 @@ services:
       - DATABASE_NAME=eventsdb
       - DATABASE_USER=eventsuser
       - DATABASE_PASSWORD=eventspass
-      
     depends_on:
       - events-db
     expose:
