@@ -28,7 +28,7 @@ def get_events():
     query = """
         SELECT id, event_date, location, name, participation_type, popularity_score, sport_type FROM events
         WHERE sport_type = ANY(%s) AND participation_type = ANY(%s)
-        ORDER BY event_date ASC
+        ORDER BY event_date ASC LIMIT 9
     """
 
     try:
