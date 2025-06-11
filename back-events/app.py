@@ -37,7 +37,7 @@ def get_events():
         results = cur.fetchall()
         cur.close()
         conn.close()
-        return jsonify(results)
+		return jsonify({"events": results})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
