@@ -92,6 +92,7 @@ services:
       POSTGRES_PASSWORD: eventspass
     volumes:
       - events-db-data:/var/lib/postgresql/data
+      - ./back-events/init_db:/docker-entrypoint-initdb.d
 
 volumes:
   caddy_data:
