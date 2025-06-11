@@ -72,7 +72,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - DATABASE_HOST=events-db
-      - DATABASE_PORT=5433
+      - DATABASE_PORT=5432
       - DATABASE_NAME=eventsdb
       - DATABASE_USER=eventsuser
       - DATABASE_PASSWORD=eventspass

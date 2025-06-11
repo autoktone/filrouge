@@ -34,24 +34,10 @@ def get_events():
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute(query, (sport_list, participation_list))
-        rows = cur.fetchall()
+        results = cur.fetchall()
         cur.close()
         conn.close()
-		
-		# Nom des colonnes
-		columns = ['id', 'event_date', 'location', 'name', 'participation_type', 'popularity_score', 'sport_type']
-
-		# Construction Objet JSON contenant un tableau d'objets "event"
-		result = []
-		for row in rows:
-			event = dict(zip(columns, row))
-			# Conversion de la date en format HTTP/JSON
-			if isinstance(event['event_date'], datetime):
-				event['event_date'] = event['event_date'].strftime('%a, %d %b %Y %H:%M:%S GMT')
-			result.append(event)
-		
-		return jsonify({"articles": result})
-		
+        return jsonify(results)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
