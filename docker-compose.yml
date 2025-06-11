@@ -30,6 +30,7 @@ services:
       - back-predict
       - back-predict1
       - back-meteo
+      - back-events
       
   back-auth:
     build:
