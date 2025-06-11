@@ -39,9 +39,9 @@ def get_events():
         cur.close()
         conn.close()
         
-        # Nom des colonnes
-        columns = ['id', 'event_date', 'location', 'name', 'participation_type', 'popularity_score', 'sport_type']
-
+        # Récupération automatique des noms de colonnes
+        columns = [desc[0] for desc in cur.description]
+        
         # Construction Objet JSON contenant un tableau d'objets "event"
         result = []
         for row in rows:
