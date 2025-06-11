@@ -72,27 +72,27 @@ services:
       dockerfile: Dockerfile
     environment:
       - DATABASE_HOST=events-db
-      - DATABASE_PORT=5432
+      - DATABASE_PORT=5433
       - DATABASE_NAME=eventsdb
       - DATABASE_USER=eventsuser
       - DATABASE_PASSWORD=eventspass
     depends_on:
-      - events-db
+      - events1-db
     expose:
       - "5004"
     restart: unless-stopped       
 
-  events-db:
-    image: postgres:14
+  events1-db:
+    image: postgres:15
     restart: always
     environment:
       POSTGRES_DB: eventsdb
       POSTGRES_USER: eventsuser
       POSTGRES_PASSWORD: eventspass
     volumes:
-      - events-db-data:/var/lib/postgresql/data
+      - events1-db-data:/var/lib/postgresql/data
       - ./back-events/init_db:/docker-entrypoint-initdb.d
 
 volumes:
   caddy_data:
-  events-db-data:
+  events1-db-data:
